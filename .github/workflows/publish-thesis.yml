@@ -47,12 +47,14 @@ jobs:
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Tesis de Maestría</title>
+            <title>Documento</title>
+            <style>
+              html, body { width: 100%; height: 100%; margin: 0; }
+              iframe { width: 100%; height: 100%; border: 0; display: block; }
+            </style>
           </head>
           <body>
-            <h1>Tesis de Maestría</h1>
-            <p><a href="./tesis.pdf">Abrir o descargar el PDF</a></p>
-            <iframe src="./tesis.pdf" style="width:100%;height:85vh" title="Tesis"></iframe>
+            <iframe src="./tesis.pdf" title="Visor de PDF"></iframe>
           </body>
           </html>
           EOF
