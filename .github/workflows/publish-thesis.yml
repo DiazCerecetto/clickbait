@@ -1,0 +1,70 @@
+name: Compilar y publicar tesis
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "main.tex"
+      - "referencias.bib"
+      - "capitulos/**"
+      - "figuras/**"
+      - ".github/workflows/publish-thesis.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Descargar la tesis
+        uses: actions/checkout@v6
+
+      - name: Compilar PDF
+        uses: xu-cheng/latex-action@v4
+        with:
+          root_file: main.tex
+          args: "-pdf -file-line-error -halt-on-error -interaction=nonstopmode"
+
+      - name: Preparar sitio
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          cp main.pdf _site/tesis.pdf
+          cat > _site/index.html <<'EOF'
+          <!doctype html>
+          <html lang="es">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Tesis de Maestría</title>
+          </head>
+          <body>
+            <h1>Tesis de Maestría</h1>
+            <p><a href="./tesis.pdf">Abrir o descargar el PDF</a></p>
+            <iframe src="./tesis.pdf" style="width:100%;height:85vh" title="Tesis"></iframe>
+          </body>
+          </html>
+          EOF
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Cargar el sitio
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,99 @@
+\chapter{Marco teórico y estado del arte}
+\label{cap:marco}
+
+\section{Búsqueda automatizada y sistemas de agentes}
+
+La búsqueda de soluciones en aprendizaje automático puede formularse como una secuencia de candidatos evaluados con un protocolo fijo. Las grillas y el muestreo aleatorio exploran configuraciones definidas antes de ejecutar; el segundo constituye una referencia importante cuando solo algunas decisiones tienen gran influencia sobre el resultado \citep{bergstra2012}. Una comparación justa entre estrategias requiere el mismo espacio de búsqueda, datos y presupuesto. La mejor puntuación aislada no describe cuántos intentos costó alcanzarla ni cuántos candidatos fallaron.
+
+Un sistema de agentes puede añadir propuestas condicionadas por resultados anteriores, ejecución de código y análisis de errores. ASI-Arch organiza esas funciones en un ciclo de descubrimiento de arquitecturas de atención lineal \citep{liu2025asiarch}. Su escala y sus resultados pertenecen a ese dominio; no prueban que el mismo enfoque mejore detección de clickbait o cualquier otra tarea de PLN. Para estudiar esta posibilidad hay que definir qué información recibe cada agente, qué acciones puede realizar, cómo se validan sus salidas y con qué búsqueda convencional se compara.
+
+La reutilización entre tareas exige separar el ciclo de búsqueda de la especificación de una tarea concreta. Datos, métricas, restricciones y espacio de candidatos pueden variar; registro experimental, verificaciones generales y reglas de presupuesto deberían poder conservarse. La portabilidad se mide por el desempeño de la búsqueda y por el trabajo necesario para adaptar estos componentes, no solo por la capacidad de ejecutar el código en un segundo corpus.
+
+\section{La brecha informativa como objeto de estudio}
+\label{sec:definicion}
+
+Según la teoría de la curiosidad de \citet{loewenstein1994}, advertir una diferencia entre lo que sabemos y lo que queremos saber puede impulsarnos a buscar información. Una publicación que enlaza una noticia puede aprovechar esa diferencia: plantea una pregunta, deja la respuesta para el artículo e invita a abrirlo. Esta descripción no permite saber qué pretendía cada autor ni cómo reaccionó cada lector.
+
+No todos los estudios definen el clickbait de la misma manera. \citet{biyani2016} analizan titulares engañosos y rasgos de informalidad; \citet{potthast2018} miden distintos grados de clickbait en publicaciones de redes sociales. \citet{mordecki2025}, en cambio, centran la etiqueta en la omisión deliberada de información que despierta curiosidad. Con este criterio, una noticia falsa no es necesariamente clickbait, mientras que una noticia verdadera sí puede promocionarse mediante clickbait. El sensacionalismo, la exageración y las diferencias entre titular y cuerpo pueden acompañar esa omisión, pero no bastan para definirla.
+
+La definición elegida determina qué se anota y qué puede aprender un sistema. Si un corpus reúne bajo la misma etiqueta promesas incumplidas, falsedades y omisiones, un clasificador puede acertar sin reconocer la pregunta que quedó abierta. Antes de comparar modelos hay que precisar si se clasifica el titular, la publicación o el artículo; qué cuenta como caso positivo; y cómo se relaciona la publicación con la noticia. TA1C ofrece un ejemplo de esta delimitación en español \citep{mordecki2025}.
+
+\section{Tareas computacionales y entradas disponibles}
+\label{sec:tareas}
+
+Llamemos $t$ al \emph{teaser} (en TA1C, el título de la noticia y el texto del tuit, o uno de ellos si coinciden), $a$ al artículo, $i$ a una imagen asociada y $y$ a la etiqueta de clickbait. Un detector puede usar solo el teaser, $f(t)$; también el artículo, $f(t,a)$; o ambos textos y la imagen, $f(t,a,i)$. Cada opción permite responder una pregunta distinta. Con el artículo, el modelo puede comprobar si la noticia ofrece la respuesta prometida; sin él, debe basarse en el teaser. Para medir el aporte de cada entrada hay que comparar los mismos ejemplos y registrar cuáles disponen de artículo e imagen.
+
+El \emph{spoiling} busca producir una respuesta $s$ a la pregunta que deja abierta $t$, basada en el contenido de $a$. Puede consistir en extraer un fragmento, recuperar pasajes, responder una pregunta o generar texto a partir del artículo \citep{hagen2022,frobe2023}. Su propósito es dar la respuesta concreta, no resumir toda la noticia. Una oración puede resumir bien el tema y aun así dejar intacta la curiosidad del lector. También hay que comprobar que la respuesta sea fiel, breve y adecuada cuando el artículo no ofrece una única solución.
+
+Ambas tareas se ocupan de la misma brecha informativa, pero requieren datos y evaluaciones diferentes. La detección usa etiquetas y permite medir errores por clase; el spoiling necesita respuestas de referencia y debe valorar si cada salida responde a la pregunta implícita. Si se conectan ambas tareas, los errores del detector también afectan qué publicaciones reciben un spoiler. Por eso conviene evaluar cada componente antes de medir el sistema completo.
+
+\section{Corpus y tareas relacionadas}
+\label{sec:corpus}
+
+El corpus original de TA1C reúne 3\,500 publicaciones de 18 medios, anotadas para detección. Aunque el estudio describe 12 países, los CSV locales contienen 13 valores de origen del medio, incluido ``Inglaterra''. \citet{mordecki2025} informan un acuerdo entre anotadores de $\kappa=0{,}825$. Para IberLEF 2025 se publicaron 4\,200 ejemplos de detección: 2\,800 de entrenamiento, 700 de desarrollo y 700 de prueba. La tarea de spoiling incluye 500 casos con respuesta humana, distribuidos en 300, 100 y 100 \citep{ta1c2025}. Estas cantidades pueden verificarse en los CSV del repositorio. En la prueba oficial de detección se entregaban el teaser y sus metadatos, sin artículo ni imagen. Los experimentos que usan esos recursos necesitan, por tanto, un protocolo de evaluación propio.
+
+La tabla~\ref{tab:corpus} muestra por qué los resultados de estos recursos no se comparan directamente. El \emph{Clickbait Challenge 2017} predice el grado de clickbait de publicaciones sociales \citep{potthast2018}. Webis-Clickbait-22 y SemEval-2023 Task 5 trabajan con tipos de spoiler y su generación a partir de publicaciones y páginas en inglés \citep{hagen2022,frobe2023}. NoticIA reúne 850 artículos en español con titulares clickbait y resúmenes humanos de una oración \citep{garciaferrero2024}. Ese resumen no siempre responde a la pregunta concreta que plantea una publicación de TA1C.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Tareas y alcance de los recursos de referencia. Las cifras proceden de las publicaciones citadas.}
+\label{tab:corpus}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3cm}Y Y p{1.5cm}@{}}
+\toprule
+Recurso & Unidad y tarea & Referencia o criterio principal & Idioma \\
+\midrule
+TA1C (2025) & Publicación de noticia; detección y spoiler & Brecha informativa; etiqueta y respuesta humana & Español \\
+Challenge 2017 & Publicación social; regresión & Intensidad de clickbait & Inglés \\
+Webis/SemEval (2023) & Publicación y página; tipo y generación de spoiler & Fragmento o respuesta que cierra la brecha & Inglés \\
+NoticIA & Titular y artículo; resumen de una frase & Resumen humano del artículo & Español \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+También importa cómo se dividen los datos. Si una noticia o un evento aparece en entrenamiento y prueba, el modelo podría reconocerlo en lugar de detectar la brecha. La proporción de ejemplos clickbait de TA1C varía entre particiones: los CSV locales registran 798/2\,800 en entrenamiento, 203/700 en desarrollo y 167/700 en prueba. Informar estas proporciones ayuda a interpretar las métricas cuando la clase positiva es minoritaria.
+
+\section{Detección textual: señales útiles y límites}
+\label{sec:texto}
+
+Los primeros enfoques usan rasgos del vocabulario, la sintaxis y el estilo: preguntas, pronombres sin antecedente claro, puntuación, informalidad y referencias a información que aparecerá después \citep{biyani2016,potthast2018}. Permiten construir líneas base de bajo costo y relativamente fáciles de interpretar. Pero una pregunta o una palabra enfática no demuestra que se haya omitido información: también puede aparecer en un titular informativo. Hay que considerar la publicación completa y, si está disponible, el artículo.
+
+Los modelos de lenguaje reducen la necesidad de diseñar estos rasgos a mano. En TA1C se probaron codificadores para español y modelos multilingües, además de estrategias para generar spoilers \citep{ta1c2025,fing2025}. Para interpretar sus resultados hay que conocer la proporción de cada clase, cómo se ajustaron los modelos y qué datos recibieron. Una puntuación de validación cruzada, una de desarrollo y una de la prueba oficial corresponden a evaluaciones distintas.
+
+También importa saber en qué se apoya la predicción. Un modelo podría reconocer temas, estilos editoriales o medios frecuentes sin detectar la información omitida. Evaluarlo con fuentes, periodos y artículos distintos ayuda a descubrir esos atajos, sobre todo si se quiere aplicar el detector en otra plataforma.
+
+\section{Imagen, video y audio como contexto}
+\label{sec:multimodal}
+
+La imagen puede cambiar el sentido de una publicación. A veces revela la respuesta omitida; otras, refuerza la promesa o solo ilustra el tema. Al estudiar publicaciones de Twitter, \citet{glenski2017} no encontraron una mejora concluyente al añadir información visual al texto. En publicaciones de moda de Instagram, \citet{ha2018} sí encontraron señales útiles en la relación entre imagen y texto. Ninguno de los dos resultados permite anticipar qué ocurrirá con noticias en español anotadas según el criterio de TA1C.
+
+Un modelo multimodal también puede aprender asociaciones engañosas. \citet{yu2024} proponen separar los factores relevantes de los sesgos en publicaciones con varias modalidades. Para medir el aporte de la imagen en TA1C, habría que comparar las mismas noticias con y sin ella, registrar cuál se usó y tratar los casos en que falta. Permutar las imágenes entre noticias serviría para comprobar si el modelo usa su contenido o se apoya en patrones de fuente y tema. Si la diferencia es pequeña, conviene estimar su incertidumbre y revisar los errores.
+
+Los trabajos sobre miniaturas y transcripciones de video suelen usar otras etiquetas. Un titular puede describir mal un video sin dejar abierta la pregunta que define el clickbait en TA1C. CHECKER estudia miniaturas con supervisión débil \citep{xie2021}, mientras que BaitRadar combina texto, imagen y transcripciones de YouTube \citep{gamage2021}. Son antecedentes para explorar medios audiovisuales, aunque sus métricas no se trasladan directamente a noticias. El repositorio no contiene un corpus local de video o audio con cobertura, origen y etiquetas verificados para esta evaluación.
+
+La auditoría debería registrar todas las modalidades presentes en cada noticia: texto, imagen, video, audio y transcripciones. Pueden coexistir; además, no recuperar una imagen no significa que la noticia carezca de ella. Para cada archivo conviene guardar la URL, la fecha, el tipo, su función en la noticia, el estado de recuperación y una huella para detectar duplicados. Con esa información se pueden comparar grupos como ``solo texto'' o ``texto e imagen'' y controlar si las diferencias se deben al contenido o a los medios que publican más material visual.
+
+\section{Resolución del clickbait y evaluación de spoilers}
+\label{sec:spoiling}
+
+\citet{hagen2022} proponen clasificar el tipo de respuesta y obtenerla mediante pregunta-respuesta o recuperación de pasajes. SemEval-2023 Task 5 distingue spoilers de una frase, de un pasaje o de varias partes \citep{frobe2023}. TA1C pide a los sistemas respuestas de hasta 280 caracteres y las evalúa contra referencias humanas \citep{ta1c2025}. Las referencias publicadas no siempre cumplen ese límite: en los CSV locales lo superan 39/300 respuestas de entrenamiento, 19/100 de desarrollo y 20/100 de prueba. Esta diferencia debe tenerse en cuenta al interpretar métricas de solapamiento. Por las diferencias entre tareas y corpus, los resultados de un desafío no se pueden trasladar directamente al otro.
+
+BLEU y ROUGE comparan automáticamente una respuesta con textos de referencia. Son útiles, pero pueden penalizar una paráfrasis correcta o premiar palabras coincidentes en una respuesta equivocada. Por eso TA1C añadió juicios humanos de exactitud y completitud, concisión y fluidez para algunos sistemas \citep{ta1c2025}. El sistema con mejor BLEU no fue necesariamente el mejor valorado en exactitud. Evaluar un spoiler exige comprobar que responde a la pregunta y que la noticia respalda lo que afirma, aunque el texto suene natural.
+
+NoticIA ofrece un antecedente en español para generar una oración a partir de artículos con titulares clickbait \citep{garciaferrero2024}. Permite estudiar cómo condensar una noticia, aunque resumirla no equivale siempre a resolver la pregunta de TA1C. Si se usa como conjunto externo, habrá que comprobar qué preguntas responde cada resumen. También conviene medir por separado el aporte del artículo completo y el de la imagen.
+
+\section{Medición, comparación y amenazas a la validez}
+\label{sec:evaluacion}
+
+Cuando una clase es menos frecuente que otra, la exactitud puede ocultar sus errores. Para cada clase $c$, la precisión indica qué proporción de las predicciones de esa clase es correcta; la exhaustividad, qué proporción de sus ejemplos se detecta. F1 combina ambas: $F_{1,c}=2P_cR_c/(P_c+R_c)$, si el denominador no es cero. F1 macro promedia el valor de ambas clases con el mismo peso. Conviene informar precisión, exhaustividad, F1 por clase y proporción de ejemplos de cada clase. El tablero oficial de TA1C llama F1 a su métrica principal \citep{ta1c2025}. Sus valores publicados corresponden a la F1 de la clase clickbait: en el envío 973125, la precisión 0,8072 y la exhaustividad 0,8024 producen F1 0,8048, el valor publicado para ese mismo envío. Algunos artículos de participantes la denominan F1 macro \citep{fing2025}, pero esa denominación no coincide con el cálculo publicado. Se reportan por separado F1 de clickbait, comparable con el tablero, y F1 macro como medida complementaria.
+
+En spoiling, la similitud automática con una referencia no basta para medir si la respuesta es correcta y útil. Puede haber varias formas de responder bien, y una salida puede repetir palabras de la referencia sin resolver la pregunta. El protocolo debe definir qué cuenta como respuesta válida, qué hacer si no se encuentra una respuesta en la noticia y qué fragmento respalda cada afirmación. Si intervienen evaluadores humanos, hay que documentar los criterios, la muestra y el acuerdo entre ellos.
+
+Para comparar variantes hay que usar las mismas noticias, particiones y reglas de selección. Un intervalo de confianza de la diferencia y una revisión de errores dicen más que dos puntuaciones aisladas. Separar noticias duplicadas o del mismo evento entre entrenamiento y prueba reduce el riesgo de fuga de información. También hay que registrar imágenes inaccesibles, artículos modificados, transcripciones incompletas y metadatos que puedan servir de atajo al modelo. Estos problemas afectan especialmente las pruebas entre fuentes, países o periodos.
+
+\section{Implicaciones para la evaluación del marco}
+\label{sec:implicaciones}
+
+La revisión identifica requisitos para comparar estrategias de búsqueda sobre TA1C. Detección y \emph{spoiling} se evalúan por separado, con entradas, métricas y presupuestos explícitos. En detección hacen falta líneas base textuales, medidas por clase y comparaciones pareadas que consideren la fuente y las modalidades disponibles. En \emph{spoiling} se añade una evaluación humana de fidelidad, utilidad, concisión y fluidez. El marco de agentes debe trabajar con ambas interfaces sin incorporar al ciclo reglas especiales para una de ellas.
+
+La imagen constituye una variante de entrada en el caso de clickbait, sujeta a cobertura y controles propios. Una tarea textual externa permite evaluar la transferencia de la interfaz y del proceso de búsqueda. Estas comparaciones requieren separar desarrollo de prueba final y registrar también el costo de adaptación; un resultado positivo en un corpus no equivale a generalidad universal.

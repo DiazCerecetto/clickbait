@@ -1,0 +1,27 @@
+\chapter{Introducción}
+\label{cap:introduccion}
+
+La construcción de una solución para una tarea de procesamiento del lenguaje natural (PLN) requiere elegir datos, modelos, configuraciones y criterios de evaluación. Cada decisión consume tiempo y recursos, y una mejora observada en desarrollo puede desaparecer al cambiar de partición o de dominio. Automatizar la propuesta de alternativas solo es útil si las ejecuciones se verifican, los resultados se conservan y las comparaciones respetan un presupuesto común.
+
+Esta tesis estudia un marco de trabajo basado en agentes para organizar ese proceso. El marco separa tres funciones: proponer candidatos, ejecutarlos y comprobarlos, y analizar la evidencia acumulada para decidir el siguiente paso. Su objeto es la \emph{búsqueda de soluciones}; los agentes no sustituyen al detector o generador que finalmente se evalúa. La contribución se juzga por la calidad de los candidatos encontrados, el costo de encontrarlos, la trazabilidad de las decisiones y la posibilidad de adaptar el proceso a otra tarea.
+
+\section{Caso de estudio y alcance}
+
+El clickbait en noticias ofrece dos tareas relacionadas y distintas. Una publicación puede plantear una pregunta o prometer una revelación sin dar la respuesta; detectar ese mecanismo es una tarea de clasificación. Producir una respuesta breve sustentada en la noticia, o \emph{spoiler}, es una tarea de generación \citep{mordecki2025,ta1c2025}. El corpus TA1C y la tarea compartida de IberLEF 2025 proporcionan datos en español para ambos problemas. La imagen puede incorporarse como entrada opcional en ciertas configuraciones, pero no define el marco de agentes.
+
+La aplicación a detección y \emph{spoiling} permite examinar si una misma interfaz admite objetivos, métricas y restricciones diferentes. La transferencia se estudia en una tarea textual ajena al clickbait, con detección de fraude en mensajes como candidata. La elección final requiere un corpus identificable, etiquetas claras y una partición de evaluación defendible. Una prueba adicional puede aportar evidencia de portabilidad, sin demostrar utilidad para todas las tareas de PLN.
+
+\section{Objetivos y preguntas de investigación}
+
+El objetivo general es diseñar y evaluar un marco de agentes que explore soluciones de PLN de forma reproducible y bajo un presupuesto explícito. Se persiguen tres objetivos específicos: definir una interfaz de tarea reutilizable; comparar la búsqueda asistida por agentes con referencias convencionales en detección y generación; y medir el esfuerzo y el desempeño al adaptar el marco a otra tarea textual.
+
+Las preguntas que organizan la evaluación son:
+\begin{enumerate}
+  \item ¿Qué calidad alcanzan las soluciones encontradas por el marco frente a búsquedas convencionales con el mismo presupuesto de cómputo y de consultas?
+  \item ¿Qué aportan, por separado, la propuesta de candidatos, la ejecución verificada y el análisis de resultados con memoria experimental?
+  \item ¿Qué componentes se reutilizan al cambiar de tarea, qué adaptaciones se requieren y cómo cambia el costo total de búsqueda?
+\end{enumerate}
+
+\section{Organización de la tesis}
+
+El capítulo~\ref{cap:marco} reúne los antecedentes sobre búsqueda automatizada, agentes y clickbait. El capítulo~\ref{cap:agentes} especifica el marco y su interfaz de tarea. Los capítulos~\ref{cap:metodologia} y~\ref{cap:resultados} documentan el estudio de base realizado con TA1C; sus resultados describen los datos y las líneas de referencia, sin medir todavía el aporte del marco de agentes. El capítulo~\ref{cap:evaluacion-marco} define la comparación y la prueba de transferencia. El capítulo~\ref{cap:conclusiones} sintetiza lo establecido y los límites de la evidencia disponible.

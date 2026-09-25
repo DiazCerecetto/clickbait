@@ -1,0 +1,31 @@
+\chapter[Evaluación y transferencia]{Protocolo de evaluación del marco y transferencia}
+\label{cap:evaluacion-marco}
+
+La evaluación del marco debe distinguir la calidad de una solución individual de la eficacia del proceso que la encontró. Los resultados del estudio de base establecen referencias y riesgos metodológicos, pero no permiten atribuir mejoras a los agentes. La comparación principal se realiza entre estrategias de búsqueda que disponen de los mismos datos, espacio de soluciones y límites de recursos.
+
+\section{Comparadores y presupuesto}
+
+La referencia mínima es una búsqueda aleatoria reproducible sobre el mismo espacio de candidatos; una grilla pequeña o una selección manual documentada pueden ampliar la comparación. La búsqueda aleatoria es una referencia establecida para optimización de hiperparámetros \citep{bergstra2012}. Antes de ejecutar las estrategias se fijan el número máximo de intentos, el tiempo de cómputo, las consultas a servicios externos y sus costos. Se registran los valores efectivos de esos recursos, incluidos los intentos que fallan o exceden el tiempo. Si una estrategia consume menos que su límite, se informa el recurso no utilizado.
+
+Para cada estrategia se traza la mejor calidad válida encontrada frente al costo acumulado. Además de la puntuación final se informa el área bajo esa trayectoria o un resumen equivalente, la variación entre semillas, la proporción de candidatos válidos y el tiempo necesario para reproducir el mejor resultado. La selección se hace en desarrollo o validación cruzada; la partición final se consulta una vez después de congelar la configuración elegida.
+
+\section{Detección y generación de clickbait}
+
+En detección se conservan las particiones y la definición de la clase positiva de TA1C. Las familias comparadas reciben las mismas entradas, y las configuraciones que usan imagen se analizan aparte porque el test oficial carece de esa modalidad. El informe incluye F1 de clickbait, F1 macro, precisión, exhaustividad y matrices de confusión, con intervalos pareados para diferencias entre estrategias sobre los mismos casos. Los duplicados de noticia, evento o imagen deben identificarse antes de cerrar la partición final.
+
+En \emph{spoiling}, la búsqueda usa una métrica automática cuya implementación queda fijada junto con las restricciones de longitud. La evaluación final añade un juicio humano sobre si la respuesta está sustentada en el artículo, responde a la pregunta, es concisa y se entiende sin el enlace. La muestra y la rúbrica se fijan antes de inspeccionar las salidas; se informa el acuerdo entre evaluadores y se revisan desacuerdos. Las referencias humanas de TA1C que exceden el límite de 280 caracteres se analizan como una fuente de sesgo de las métricas de solapamiento.
+
+\section{Ablaciones del proceso de agentes}
+
+Para atribuir efectos a los componentes del marco se comparan, con el mismo presupuesto, el ciclo completo y variantes que eliminan o sustituyen una función. El proponente puede reemplazarse por muestreo aleatorio; el analista puede recibir solo la última corrida en lugar del historial; y el ejecutor puede conservar las mismas comprobaciones deterministas mientras se desactiva la reparación automática de fallos. Cada variante mantiene los mismos datos y reglas de validez. La interpretación debe separar diferencias de calidad de diferencias en número de candidatos ejecutados correctamente.
+
+\section{Transferencia a otra tarea}
+
+La prueba de transferencia utiliza una tarea textual distinta del clickbait. La detección de fraude en mensajes, como phishing o estafas, es una opción si se dispone de un corpus con licencia, etiquetas y partición adecuadas. Antes de ejecutarla se documentan los cambios exigidos por la nueva tarea: adaptador de datos, espacio de candidatos, métrica, verificaciones, prompts y recursos. La lógica del ciclo y el formato del registro permanecen como objetos de evaluación: cualquier modificación de ellos se informa como límite de la reutilización.
+
+La transferencia se juzga con dos medidas complementarias. La primera es el desempeño frente a una referencia propia de la nueva tarea bajo el mismo presupuesto. La segunda es el esfuerzo de adaptación, medido mediante componentes modificados, tiempo de implementación y fallos de integración. Un resultado favorable en un dominio adicional respalda una portabilidad delimitada; no basta para afirmar que el marco es útil en cualquier tarea de PLN.
+
+% Incorporar aquí, cuando existan, tablas de resultados del marco con:
+% tarea, estrategia, presupuesto planificado y consumido, semillas,
+% calidad en validación y prueba, tasa de fallos, costo, intervalos y
+% análisis de errores. Registrar también el corpus y resultado de transferencia.

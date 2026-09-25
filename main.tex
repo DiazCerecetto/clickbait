@@ -1,0 +1,70 @@
+\documentclass[12pt,a4paper,oneside,openany]{book}
+
+% Compilar con pdfLaTeX + BibTeX; véase README.md.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=3cm]{geometry}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{natbib}
+\usepackage{hyperref}
+
+\hypersetup{
+  hidelinks,
+  hypertexnames=false,
+  pdftitle={Diseño y evaluación de un marco de trabajo basado en agentes para la búsqueda de soluciones en tareas de procesamiento del lenguaje natural: clickbait como caso de estudio},
+  pdfauthor={Miguelángel Díaz Cerecetto}
+}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0.25em}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\begin{document}
+\frontmatter
+
+\begin{titlepage}
+\centering
+{\large Universidad de la República\par}
+\vspace{0.4cm}
+{\large Programa de Desarrollo de las Ciencias Básicas (PEDECIBA)\par}
+{\large Área Informática --- Maestría en Informática\par}
+\vfill
+{\Huge\bfseries Diseño y evaluación de un marco de trabajo basado en agentes para la búsqueda de soluciones en tareas de procesamiento del lenguaje natural\par}
+\vspace{0.6cm}
+{\Large Clickbait como caso de estudio\par}
+\vspace{1cm}
+{\large Tesis de Maestría en Informática\par}
+\vfill
+{\large Miguelángel Díaz Cerecetto\par}
+\vspace{0.8cm}
+{\large Montevideo, septiembre de 2026\par}
+\end{titlepage}
+
+\chapter*{Resumen}
+\addcontentsline{toc}{chapter}{Resumen}
+La búsqueda de soluciones para tareas de procesamiento del lenguaje natural exige comparar alternativas bajo restricciones de datos, cómputo y calidad. Esta tesis plantea un marco de trabajo basado en agentes que propone candidatos, ejecuta evaluaciones verificables y utiliza sus resultados para orientar nuevas iteraciones. La detección de clickbait y la generación de respuestas breves basadas en noticias permiten estudiar el mismo proceso en tareas de clasificación y generación. Se especifican la interfaz de tarea, el registro de experimentos y un protocolo de comparación con búsquedas convencionales de igual presupuesto. Como estudio de base se analizan datos de TA1C y experimentos previos de detección, \emph{spoiling} y uso opcional de imágenes. Estos resultados caracterizan las tareas y sus limitaciones; la eficacia del marco de agentes y su transferencia a otra tarea textual deben establecerse mediante la evaluación definida en esta tesis.
+
+\noindent\textbf{Palabras clave:} sistemas de agentes; búsqueda de soluciones; procesamiento del lenguaje natural; clickbait; transferencia entre tareas.
+
+\tableofcontents
+
+\mainmatter
+\input{capitulos/01_introduccion}
+\input{capitulos/02_marco_teorico}
+\input{capitulos/03_marco_agentes}
+\input{capitulos/04_estudio_base_metodologia}
+\input{capitulos/05_estudio_base_resultados}
+\input{capitulos/06_evaluacion_marco}
+% \input{capitulos/07_resultados_marco} % Activar tras incorporar resultados del marco.
+\input{capitulos/08_conclusiones}
+
+\backmatter
+\bibliographystyle{plainnat}
+\bibliography{referencias}
+
+\end{document}
