@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Resumen público del estudio de base de la tesis sobre detección y spoiling de clickbait.">
+  <title>Estudio de base · Clickbait</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172331;
+      --muted: #586777;
+      --blue: #2755a5;
+      --teal: #087e79;
+      --line: #d9e2e8;
+      --paper: #ffffff;
+      --wash: #f3f7f8;
+      --soft-blue: #eaf0fb;
+      --soft-teal: #e7f5f2;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-synthesis: none;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--wash); color: var(--ink); line-height: 1.55; }
+    a { color: var(--blue); }
+    a:focus-visible, button:focus-visible { outline: 3px solid #e4a44c; outline-offset: 3px; }
+    .shell { max-width: 1240px; margin: auto; padding: 0 28px; }
+    .topbar { background: #152a42; color: #fff; }
+    .topbar .shell { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { font-size: .9rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    .topbar a { color: #fff; text-decoration: none; font-size: .9rem; font-weight: 650; }
+    .topbar a:hover { text-decoration: underline; }
+    .toplinks { display: flex; gap: 22px; flex-wrap: wrap; }
+    header.hero { padding: 60px 0 46px; background: radial-gradient(circle at 90% 4%, #d8eaf5, transparent 32%), linear-gradient(125deg, #f8fbfd 0%, #e9f3f3 100%); border-bottom: 1px solid var(--line); }
+    .eyebrow { color: var(--teal); font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    h1 { max-width: 900px; margin: 10px 0 16px; font-size: clamp(2.35rem, 5vw, 4.3rem); line-height: 1.08; letter-spacing: -.045em; }
+    .lede { max-width: 800px; margin: 0; color: #45586a; font-size: 1.18rem; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .button { display: inline-flex; align-items: center; min-height: 43px; padding: 10px 16px; border-radius: 9px; text-decoration: none; font-weight: 700; font-size: .9rem; }
+    .button.primary { background: var(--blue); color: #fff; }
+    .button.secondary { background: #fff; color: var(--blue); border: 1px solid #bbcad8; }
+    .note { margin-top: 24px; max-width: 900px; padding: 13px 17px; border-left: 4px solid var(--teal); background: rgba(255,255,255,.72); color: #435363; font-size: .91rem; }
+    nav.sections { background: #fff; border-bottom: 1px solid var(--line); }
+    nav.sections .shell { display: flex; gap: 28px; overflow-x: auto; white-space: nowrap; }
+    nav.sections a { display: inline-block; padding: 16px 0; color: #42576b; text-decoration: none; font-size: .9rem; font-weight: 700; border-bottom: 3px solid transparent; }
+    nav.sections a:hover, nav.sections a:focus { border-color: var(--teal); color: var(--ink); }
+    main { padding: 36px 0 68px; }
+    section { scroll-margin-top: 22px; margin-bottom: 44px; }
+    h2 { margin: 0 0 9px; font-size: clamp(1.55rem, 2.4vw, 2.15rem); line-height: 1.2; letter-spacing: -.025em; }
+    .section-intro { max-width: 850px; margin: 0 0 20px; color: var(--muted); }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+    .stat, .card, .figure, .table-card, .callout { background: var(--paper); border: 1px solid var(--line); border-radius: 13px; box-shadow: 0 3px 14px rgba(27,47,67,.035); }
+    .stat { padding: 20px 21px 17px; }
+    .stat strong { display: block; font-size: 2.15rem; line-height: 1.1; letter-spacing: -.04em; color: #203f74; }
+    .stat span { display: block; margin-top: 8px; color: var(--muted); font-size: .88rem; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .card { padding: 22px; }
+    .card h3, .table-card h3, .figure h3 { margin: 0 0 10px; font-size: 1.14rem; }
+    .card p, .figure p { margin: 0 0 12px; color: var(--muted); font-size: .94rem; }
+    .card p:last-child, .figure p:last-child { margin-bottom: 0; }
+    .metric { margin: 11px 0; color: var(--teal); font-size: 1.9rem; font-weight: 760; line-height: 1.2; letter-spacing: -.03em; }
+    .metric small { display: block; margin-top: 3px; color: var(--muted); font-size: .8rem; font-weight: 550; letter-spacing: 0; }
+    .tag { display: inline-block; padding: 4px 8px; border-radius: 5px; background: var(--soft-blue); color: #244882; font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+    .tag.teal { background: var(--soft-teal); color: #09645f; }
+    .figure { overflow: hidden; }
+    .figure .caption { padding: 19px 22px 17px; border-bottom: 1px solid var(--line); }
+    .figure img { display: block; width: 100%; height: auto; padding: 15px; background: #fff; }
+    .figure .source { padding: 0 22px 18px; font-size: .8rem; color: var(--muted); }
+    .table-card { overflow: hidden; }
+    .table-card .caption { padding: 20px 22px 10px; }
+    .table-card .caption p { margin: 0 0 9px; color: var(--muted); font-size: .9rem; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { padding: 12px 16px; text-align: left; vertical-align: top; border-top: 1px solid var(--line); }
+    th { background: #f5f8fa; color: #405366; font-size: .76rem; letter-spacing: .035em; text-transform: uppercase; }
+    td:last-child { font-weight: 750; white-space: nowrap; }
+    .callout { padding: 19px 22px; border-left: 4px solid var(--teal); }
+    .callout p { margin: 0; color: #465767; }
+    .callout strong { color: var(--ink); }
+    .stack { display: grid; gap: 18px; }
+    .footnotes { padding: 24px 0 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: .87rem; }
+    .footnotes p { max-width: 900px; margin: 0 0 12px; }
+    footer { padding: 24px 0 36px; background: #152a42; color: #dce6ec; font-size: .86rem; }
+    footer .shell { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    footer a { color: #fff; }
+    @media (max-width: 800px) { .stats { grid-template-columns: repeat(2,minmax(0,1fr)); } .grid { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { .shell { padding: 0 17px; } header.hero { padding: 40px 0 30px; } .stats { gap: 9px; } .stat { padding: 15px; } .stat strong { font-size: 1.75rem; } .topbar .shell { align-items: flex-start; flex-direction: column; padding-top: 13px; padding-bottom: 13px; gap: 7px; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="shell">
+      <div class="brand">Tesis · Clickbait</div>
+      <div class="toplinks"><a href="./">Documento</a><a href="tesis.pdf">PDF completo</a><a href="https://github.com/DiazCerecetto/clickbait">Repositorio público</a></div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="shell">
+      <div class="eyebrow">Panel público · Estudio de base</div>
+      <h1>Detección y spoiling de clickbait</h1>
+      <p class="lede">Un resumen visual de las líneas de base, la relación entre calidad y cómputo, y el aporte observado de la imagen en los experimentos descritos en el manuscrito.</p>
+      <div class="hero-actions"><a class="button primary" href="#panorama">Explorar resultados</a><a class="button secondary" href="tesis.pdf">Leer la tesis (PDF)</a></div>
+      <div class="note">Estos resultados son una referencia experimental para la tesis. Las cifras provienen del capítulo «Resultados del estudio de base» y combinan protocolos distintos; las comparaciones válidas se indican en cada sección.</div>
+    </div>
+  </header>
+
+  <nav class="sections" aria-label="Secciones del panel"><div class="shell"><a href="#panorama">Panorama</a><a href="#deteccion">Detección</a><a href="#spoiling">Spoiling</a><a href="#imagen">Aporte de imagen</a><a href="#lectura">Cómo leerlo</a></div></nav>
+
+  <main class="shell">
+    <section id="panorama">
+      <h2>Panorama del registro</h2>
+      <p class="section-intro">El registro reúne configuraciones exploratorias. Los gráficos de calidad y cómputo incluyen solo las corridas con FLOPs estimados y protocolos comparables dentro de cada tarea.</p>
+      <div class="stats">
+        <div class="stat"><strong>133</strong><span>identificadores de corrida</span></div>
+        <div class="stat"><strong>119</strong><span>corridas completadas</span></div>
+        <div class="stat"><strong>96</strong><span>de detección completadas</span></div>
+        <div class="stat"><strong>23</strong><span>de spoiling completadas</span></div>
+      </div>
+    </section>
+
+    <section id="deteccion">
+      <h2>Detección</h2>
+      <p class="section-intro">F1 de la clase clickbait. Las filas de desarrollo (700 ejemplos) y las de predicción fuera de fold (3.500 ejemplos) responden a protocolos diferentes y no forman una clasificación única.</p>
+      <div class="stack">
+        <div class="table-card">
+          <div class="caption"><h3>Resultados seleccionados</h3><p>Las cinco configuraciones resumidas en la tabla del manuscrito.</p></div>
+          <div class="table-scroll"><table><thead><tr><th>Configuración</th><th>Ejemplos</th><th>Protocolo</th><th>F1 clickbait</th></tr></thead><tbody>
+            <tr><td>TF-IDF + SVM lineal</td><td>700</td><td>Desarrollo</td><td>0,6646</td></tr>
+            <tr><td>RoBERTa-BNE, clases ponderadas</td><td>700</td><td>Desarrollo</td><td>0,8900</td></tr>
+            <tr><td>D10b, solo texto</td><td>3.500</td><td>OOF CV5</td><td>0,8500</td></tr>
+            <tr><td>D10b, texto + imagen</td><td>3.500</td><td>OOF CV5</td><td>0,8523</td></tr>
+            <tr><td>D11a, fusión MLP fija</td><td>3.500</td><td>OOF CV5</td><td>0,8455</td></tr>
+          </tbody></table></div>
+        </div>
+        <div class="figure"><div class="caption"><span class="tag">54 corridas comparables</span><h3>Calidad frente a cómputo</h3><p>El frente conecta las configuraciones no dominadas del registro. Los FLOPs se estiman por ejemplo.</p></div><img src="figuras/frente_detection.png" alt="Dispersión de F1 clickbait frente a FLOPs estimados para 54 corridas de detección; se destaca el frente no dominado." loading="lazy"><div class="source">Figura publicada en el capítulo «Resultados del estudio de base».</div></div>
+      </div>
+    </section>
+
+    <section id="spoiling">
+      <h2>Spoiling</h2>
+      <p class="section-intro">Las métricas ROUGE-L y BERTScore citadas aquí se calcularon localmente en desarrollo. Las corridas generativas aún no tienen una evaluación final en prueba.</p>
+      <div class="grid" style="margin-bottom:18px">
+        <div class="card"><span class="tag teal">Línea base · 100 ejemplos</span><h3>Heurística oficial replicada</h3><div class="metric">0,1550<small>ROUGE-L local en desarrollo</small></div><p>BERTScore: 0,6533.</p></div>
+        <div class="card"><span class="tag teal">Modelo local · desarrollo</span><h3>Qwen 3.5 4B</h3><div class="metric">0,2283<small>ROUGE-L local</small></div><p>BERTScore: 0,6996.</p></div>
+        <div class="card"><span class="tag">Servicio API · desarrollo</span><h3>GPT-5.6 Luna, sin imagen</h3><div class="metric">0,2884<small>ROUGE-L local</small></div><p>BERTScore: 0,7273. Costo aproximado: USD 0,327 por 1.000 ejemplos en estas condiciones.</p></div>
+        <div class="card"><span class="tag">Servicio API · desarrollo</span><h3>GPT-5.6 Luna, con imagen</h3><div class="metric">0,3151<small>ROUGE-L local</small></div><p>BERTScore: 0,7350. Costo aproximado: USD 0,636 por 1.000 ejemplos en estas condiciones.</p></div>
+      </div>
+      <div class="stack">
+        <div class="callout"><p><strong>Comparación pareada de Luna:</strong> la diferencia de ROUGE-L al añadir imagen fue +0,0267, con intervalo de confianza del 95 % [−0,0073; 0,0641]. El intervalo incluye cero.</p></div>
+        <div class="figure"><div class="caption"><span class="tag">16 corridas comparables</span><h3>Calidad frente a cómputo local</h3><p>La figura muestra ROUGE-L local y FLOPs estimados. Los servicios por API quedan fuera porque no tienen FLOPs comparables.</p></div><img src="figuras/frente_spoiling.png" alt="Dispersión de ROUGE-L local frente a FLOPs estimados para 16 corridas de spoiling; se destaca el frente no dominado." loading="lazy"><div class="source">Figura publicada en el capítulo «Resultados del estudio de base».</div></div>
+      </div>
+    </section>
+
+    <section id="imagen">
+      <h2>Aporte de la imagen</h2>
+      <p class="section-intro">Diferencias pareadas al agregar imagen o pie de foto. El cero marca ausencia de cambio; los intervalos que lo cruzan no muestran una mejora concluyente en estas configuraciones.</p>
+      <div class="grid" style="margin-bottom:18px">
+        <div class="card"><span class="tag">Detección · D10b</span><h3>Fusión MLP residual</h3><div class="metric">+0,0023<small>Δ F1 clickbait, texto + imagen frente a texto</small></div><p>IC del 95 % [−0,0047; 0,0098] sobre predicciones OOF. El intervalo incluye cero.</p></div>
+        <div class="card"><span class="tag">Detección · D10a</span><h3>DeiT + Beto</h3><div class="metric">−0,0242<small>Δ F1 clickbait al agregar imagen</small></div><p>IC del 95 % [−0,0444; −0,0055] sobre 3.500 predicciones OOF. La variante con SigLIP2 también disminuyó: −0,0254.</p></div>
+      </div>
+      <div class="grid">
+        <div class="figure"><div class="caption"><h3>Detección: diferencia de F1</h3><p>Comparaciones pareadas entre texto e imagen en los ejemplos disponibles.</p></div><img src="figuras/ablacion_detection.png" alt="Gráfico de diferencias pareadas de F1 clickbait al agregar imagen en detección, con intervalos del 95 por ciento." loading="lazy"><div class="source">D10 y D11 usan predicciones fuera de fold.</div></div>
+        <div class="figure"><div class="caption"><h3>Spoiling: diferencia de ROUGE-L</h3><p>Imagen o pie de foto frente al modelo sin información visual.</p></div><img src="figuras/ablacion_spoiling.png" alt="Gráfico de diferencias pareadas de ROUGE-L local al agregar imagen o pie de foto en spoiling, con intervalos del 95 por ciento." loading="lazy"><div class="source">Tres comparaciones de Gemma: +0,0026 a +0,0061; LFM: −0,0067. Todos los intervalos incluyen cero.</div></div>
+      </div>
+    </section>
+
+    <section id="lectura">
+      <h2>Cómo interpretar esta referencia</h2>
+      <div class="grid">
+        <div class="card"><h3>Protocolos y selección</h3><p>Varias configuraciones se eligieron a partir de desarrollo. Sus mejores cifras pueden ser optimistas. Los resultados de desarrollo, prueba y OOF se presentan con su protocolo para evitar comparaciones directas impropias.</p></div>
+        <div class="card"><h3>Alcance de la evaluación visual</h3><p>La validación visual no separa duplicados, D11 se ejecutó con una sola semilla y la disponibilidad de imágenes varía. El test oficial de detección no incluye imágenes ni artículos.</p></div>
+        <div class="card"><h3>Métricas y costo</h3><p>ROUGE-L y BLEU locales no reproducen exactamente la evaluación oficial de spoiling. Los FLOPs estimados de modelos locales no se comparan directamente con el costo monetario de servicios por API.</p></div>
+        <div class="card"><h3>Trabajo pendiente</h3><p>La comparación de calidad y costo aún no incorpora obtención de imágenes, latencia total ni evaluación humana de spoilers. Estos resultados sirven como línea de referencia para evaluar el marco de agentes.</p></div>
+      </div>
+    </section>
+
+    <div class="footnotes"><p><strong>Fuente:</strong> capítulo «Resultados del estudio de base» del <a href="tesis.pdf">manuscrito público</a> y las cuatro figuras reproducidas allí. Este panel resume resultados agregados; el detalle de corridas y respuestas no forma parte de esta publicación.</p><p>OOF CV5: predicciones fuera de fold en validación cruzada de cinco particiones. IC: intervalo de confianza.</p></div>
+  </main>
+
+  <footer><div class="shell"><span>Estudio de base · Tesis de Maestría de Miguelángel Díaz Cerecetto</span><span><a href="tesis.pdf">PDF</a> · <a href="https://github.com/DiazCerecetto/clickbait">Repositorio</a></span></div></footer>
+</body>
+</html>

@@ -8,6 +8,7 @@ on:
       - "referencias.bib"
       - "capitulos/**"
       - "figuras/**"
+      - "panel.html"
       - ".github/workflows/publish-thesis.yml"
   workflow_dispatch:
 
@@ -41,6 +42,10 @@ jobs:
           set -euo pipefail
           mkdir -p _site
           cp main.pdf _site/tesis.pdf
+          cp panel.html _site/panel.html
+          mkdir -p _site/figuras
+          cp figuras/frente_detection.png figuras/frente_spoiling.png \
+            figuras/ablacion_detection.png figuras/ablacion_spoiling.png _site/figuras/
           cat > _site/index.html <<'EOF'
           <!doctype html>
           <html lang="es">
