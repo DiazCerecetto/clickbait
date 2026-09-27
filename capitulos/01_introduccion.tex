@@ -1,29 +1,4 @@
 \chapter{Introducción}
 \label{cap:introduccion}
 
-Una publicación puede despertar curiosidad al omitir información que la noticia permite recuperar. Identificar esa omisión y ofrecer una respuesta breve son dos problemas relacionados: el primero requiere una clasificación y el segundo, una respuesta sustentada en una fuente. En un feed, además de la calidad del detector importa cuánto tarda en responder mientras se recorren las publicaciones; cuando el \emph{spoiler} usa un servicio externo, importa el costo de cada consulta. La información disponible tampoco se limita siempre al texto y al enlace de una noticia: una publicación puede contener imagen o video sin enlace, y la noticia puede incluir imagen, video o audio.
-
-La tesis se organiza en dos etapas. La primera busca mejorar la detección y el \emph{spoiling} de clickbait con una evaluación conjunta de calidad y recursos, y examinar qué información falta en los datos actuales para representar mejor las publicaciones observadas. La segunda estudia si un ciclo de agentes puede mejorar el proceso de búsqueda de soluciones a partir de los resultados acumulados. Los agentes son responsables de proponer, validar, ejecutar y analizar experimentos; no sustituyen necesariamente al detector o al generador que se usa al final.
-
-\section{Caso de estudio y estado del trabajo}
-
-TA1C proporciona publicaciones de noticias en español con etiquetas para detección y un subconjunto con respuestas de \emph{spoiling} \citep{mordecki2025,ta1c2025}. Las corridas ya realizadas permiten estudiar calidad frente a cómputo estimado y explorar el aporte de imágenes. Son un estudio de base: no equivalen a una evaluación de latencia durante el uso, a un corpus multimodal nuevo ni a resultados del ciclo de agentes.
-
-Un prototipo local combina una extensión de Chrome para el feed de X con una aplicación de apoyo: muestra la detección en publicaciones seleccionadas y ofrece un botón para generar un \emph{spoiler}. Sirve para observar los pasos de interacción y los tipos de entrada que habría que cubrir. Su demostración no establece rendimiento, cobertura del feed ni utilidad para usuarios. La disponibilidad de medios y artículos fuera de TA1C debe comprobarse antes de incorporarlos a una evaluación.
-
-\section{Objetivos y preguntas de investigación}
-
-El primer objetivo es encontrar y evaluar soluciones de detección con buena F1 y tiempo de respuesta acotado, y soluciones de \emph{spoiling} que respondan con fidelidad y un costo de inferencia explícito. El segundo es auditar TA1C y estudiar la construcción de una extensión con modalidades y fuentes adicionales, distinguiendo contenido ausente de contenido no recuperado. El tercero es diseñar y evaluar un ciclo de agentes que use las soluciones y el historial experimental para buscar mejoras del pipeline bajo un presupuesto fijado.
-
-Las preguntas que orientan el trabajo son:
-\begin{enumerate}
-  \item ¿Qué compromisos entre calidad y costo o latencia ofrecen las soluciones de detección y \emph{spoiling} cuando se miden con el mismo protocolo y las entradas disponibles en el uso previsto?
-  \item ¿Qué cobertura y sesgos tiene la información de TA1C frente a publicaciones con medios adicionales, y qué aporta una extensión multimodal documentada a la evaluación de ambas tareas?
-  \item ¿El ciclo de agentes encuentra mejores soluciones para el pipeline, o soluciones comparables con menos recursos, que una búsqueda aleatoria reproducible con los mismos datos, espacio de candidatos y presupuesto?
-\end{enumerate}
-
-La generación de respuestas a partir de video sin artículo sería una variante de tarea que requiere ejemplos y referencias propios. No se infiere que el \emph{spoiling} textual de TA1C la resuelva. La posible transferencia del marco a un dominio ajeno al clickbait queda como ampliación posterior, sujeta a definir un corpus y recursos; no forma parte de las tres preguntas principales.
-
-\section{Organización de la tesis}
-
-El capítulo~\ref{cap:marco} reúne antecedentes de clickbait, modalidades y búsqueda automatizada. El capítulo~\ref{cap:agentes} especifica el ciclo de agentes y distingue la búsqueda experimental de la adquisición de datos. Los capítulos~\ref{cap:metodologia} y~\ref{cap:resultados} documentan el estudio de base en TA1C y sus límites. El capítulo~\ref{cap:evaluacion-marco} presenta la metodología prevista para medir calidad, recursos, cobertura multimodal y el aporte del ciclo. Los resultados del marco y las conclusiones se incorporarán cuando existan corridas suficientes para responder las preguntas anteriores.
+\emph{Pendiente de redacción.}
