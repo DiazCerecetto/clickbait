@@ -17,7 +17,7 @@
 \hypersetup{
   hidelinks,
   hypertexnames=false,
-  pdftitle={Diseño y evaluación de un marco de trabajo basado en agentes para la búsqueda de soluciones en tareas de procesamiento del lenguaje natural: clickbait como caso de estudio},
+  pdftitle={Diseño y evaluación de un marco de trabajo basado en agentes para la búsqueda de soluciones en tareas de detección y spoiling de clickbait},
   pdfauthor={Miguelángel Díaz Cerecetto}
 }
 \setlength{\parindent}{1.2em}
@@ -29,17 +29,15 @@
 
 \begin{titlepage}
 \centering
-{\large Universidad de la República\par}
-\vspace{0.4cm}
-{\large Programa de Desarrollo de las Ciencias Básicas (PEDECIBA)\par}
-{\large Área Informática --- Maestría en Informática\par}
+\vspace*{2.2cm}
+{\Huge\bfseries Diseño y evaluación de un marco de trabajo basado en agentes para la búsqueda de soluciones en tareas de detección y spoiling de clickbait\par}
 \vfill
-{\Huge\bfseries Diseño y evaluación de un marco de trabajo basado en agentes para la búsqueda de soluciones en tareas de procesamiento del lenguaje natural\par}
-\vspace{0.6cm}
-{\Large Clickbait como caso de estudio\par}
-\vspace{1cm}
 {\large Tesis de Maestría en Informática\par}
-\vfill
+\vspace{0.7cm}
+{\large Universidad de la República\par}
+{\large Programa de Desarrollo de las Ciencias Básicas (PEDECIBA)\par}
+{\large Área Informática, Maestría en Informática\par}
+\vspace{0.7cm}
 {\large Miguelángel Díaz Cerecetto\par}
 \vspace{0.8cm}
 {\large Montevideo, septiembre de 2026\par}
@@ -47,9 +45,9 @@
 
 \chapter*{Resumen}
 \addcontentsline{toc}{chapter}{Resumen}
-La búsqueda de soluciones para tareas de procesamiento del lenguaje natural exige comparar alternativas bajo restricciones de datos, cómputo y calidad. Esta tesis plantea un marco de trabajo basado en agentes que propone candidatos, ejecuta evaluaciones verificables y utiliza sus resultados para orientar nuevas iteraciones. La detección de clickbait y la generación de respuestas breves basadas en noticias permiten estudiar el mismo proceso en tareas de clasificación y generación. Se especifican la interfaz de tarea, el registro de experimentos y un protocolo de comparación con búsquedas convencionales de igual presupuesto. Como estudio de base se analizan datos de TA1C y experimentos previos de detección, \emph{spoiling} y uso opcional de imágenes. Estos resultados caracterizan las tareas y sus limitaciones; la eficacia del marco de agentes y su transferencia a otra tarea textual deben establecerse mediante la evaluación definida en esta tesis.
+Esta tesis estudia la detección y el \emph{spoiling} de clickbait en español bajo restricciones de calidad, tiempo de respuesta y costo de inferencia. Un estudio de base sobre TA1C reúne corridas exploratorias y frentes de Pareto entre calidad y cómputo estimado; esas comparaciones aún no miden la latencia completa de uso ni validan la eficacia de un sistema desplegado. Se propone evaluar alternativas de detección con F1 y latencia, y alternativas de \emph{spoiling} con métricas automáticas, valoración humana y costo por consulta. También se plantea auditar las modalidades disponibles en las publicaciones y noticias, y estudiar una extensión documentada de TA1C con material de distintas fuentes. Sobre las soluciones obtenidas se diseñará un ciclo de agentes que proponga candidatos, valide y ejecute pruebas, analice resultados y use su historial para orientar nuevas propuestas. Su aporte se evaluará frente a una búsqueda aleatoria reproducible con los mismos datos, espacio de candidatos y presupuesto. Los resultados de estas etapas permanecen pendientes.
 
-\noindent\textbf{Palabras clave:} sistemas de agentes; búsqueda de soluciones; procesamiento del lenguaje natural; clickbait; transferencia entre tareas.
+\noindent\textbf{Palabras clave:} clickbait; detección; \emph{spoiling}; calidad y costo; datos multimodales; sistemas de agentes.
 
 \tableofcontents
 
@@ -61,7 +59,7 @@ La búsqueda de soluciones para tareas de procesamiento del lenguaje natural exi
 \input{capitulos/05_estudio_base_resultados}
 \input{capitulos/06_evaluacion_marco}
 % \input{capitulos/07_resultados_marco} % Activar tras incorporar resultados del marco.
-\input{capitulos/08_conclusiones}
+% \input{capitulos/08_conclusiones} % Redactar cuando exista evidencia para responder las preguntas de investigación.
 
 \backmatter
 \bibliographystyle{plainnat}

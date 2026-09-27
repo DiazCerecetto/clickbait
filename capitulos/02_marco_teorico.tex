@@ -7,6 +7,8 @@ La búsqueda de soluciones en aprendizaje automático puede formularse como una 
 
 Un sistema de agentes puede añadir propuestas condicionadas por resultados anteriores, ejecución de código y análisis de errores. ASI-Arch organiza esas funciones en un ciclo de descubrimiento de arquitecturas de atención lineal \citep{liu2025asiarch}. Su escala y sus resultados pertenecen a ese dominio; no prueban que el mismo enfoque mejore detección de clickbait o cualquier otra tarea de PLN. Para estudiar esta posibilidad hay que definir qué información recibe cada agente, qué acciones puede realizar, cómo se validan sus salidas y con qué búsqueda convencional se compara.
 
+El preprint AgentHPOBench evalúa agentes como optimizadores secuenciales: cada paso parte de una línea base validada y ofrece al agente configuraciones, métricas y registros anteriores antes de proponer la siguiente prueba \citep{huai2026agenthpobench}. Sus autores observan dificultades para sostener mejoras iterativas y diagnosticar registros complejos. Es un antecedente metodológico para medir trayectorias y fallos, no una demostración de que los agentes superarán a la búsqueda aleatoria en clickbait.
+
 La reutilización entre tareas exige separar el ciclo de búsqueda de la especificación de una tarea concreta. Datos, métricas, restricciones y espacio de candidatos pueden variar; registro experimental, verificaciones generales y reglas de presupuesto deberían poder conservarse. La portabilidad se mide por el desempeño de la búsqueda y por el trabajo necesario para adaptar estos componentes, no solo por la capacidad de ejecutar el código en un segundo corpus.
 
 \section{La brecha informativa como objeto de estudio}
@@ -53,6 +55,8 @@ NoticIA & Titular y artículo; resumen de una frase & Resumen humano del artícu
 
 También importa cómo se dividen los datos. Si una noticia o un evento aparece en entrenamiento y prueba, el modelo podría reconocerlo en lugar de detectar la brecha. La proporción de ejemplos clickbait de TA1C varía entre particiones: los CSV locales registran 798/2\,800 en entrenamiento, 203/700 en desarrollo y 167/700 en prueba. Informar estas proporciones ayuda a interpretar las métricas cuando la clase positiva es minoritaria.
 
+La extensión de un corpus exige describir cómo se obtuvo y a quién representa, además de contar ejemplos. Las fichas de datos propuestas por \citet{gebru2021datasheets} incluyen motivación, composición, recolección y usos previstos; las declaraciones de datos para PLN de \citet{bender2018datastatements} ayudan a delimitar las variedades lingüísticas cubiertas y el alcance de las afirmaciones. Para publicaciones en español procedentes de varias fuentes, estos registros deben acompañar las etiquetas y los archivos multimedia.
+
 \section{Detección textual: señales útiles y límites}
 \label{sec:texto}
 
@@ -61,6 +65,8 @@ Los primeros enfoques usan rasgos del vocabulario, la sintaxis y el estilo: preg
 Los modelos de lenguaje reducen la necesidad de diseñar estos rasgos a mano. En TA1C se probaron codificadores para español y modelos multilingües, además de estrategias para generar spoilers \citep{ta1c2025,fing2025}. Para interpretar sus resultados hay que conocer la proporción de cada clase, cómo se ajustaron los modelos y qué datos recibieron. Una puntuación de validación cruzada, una de desarrollo y una de la prueba oficial corresponden a evaluaciones distintas.
 
 También importa saber en qué se apoya la predicción. Un modelo podría reconocer temas, estilos editoriales o medios frecuentes sin detectar la información omitida. Evaluarlo con fuentes, periodos y artículos distintos ayuda a descubrir esos atajos, sobre todo si se quiere aplicar el detector en otra plataforma.
+
+ClickGuard presenta una extensión de navegador que combina detección de clickbait y un texto breve generado a partir del artículo \citep{michaluk2026clickguard}. Su \emph{spoiler} se describe como un resumen de una o dos frases. La tesis deberá distinguir ese formato de una respuesta que cierre la pregunta omitida y medir ambos componentes con la definición y las particiones de TA1C; las puntuaciones publicadas en otros corpus no son comparables directamente.
 
 \section{Imagen, video y audio como contexto}
 \label{sec:multimodal}
@@ -71,7 +77,11 @@ Un modelo multimodal también puede aprender asociaciones engañosas. \citet{yu2
 
 Los trabajos sobre miniaturas y transcripciones de video suelen usar otras etiquetas. Un titular puede describir mal un video sin dejar abierta la pregunta que define el clickbait en TA1C. CHECKER estudia miniaturas con supervisión débil \citep{xie2021}, mientras que BaitRadar combina texto, imagen y transcripciones de YouTube \citep{gamage2021}. Son antecedentes para explorar medios audiovisuales, aunque sus métricas no se trasladan directamente a noticias. El repositorio no contiene un corpus local de video o audio con cobertura, origen y etiquetas verificados para esta evaluación.
 
+El preprint BanClickThumb reúne pares de título y miniatura de videos en bengalí y compara modelos textuales, visuales y fusionados para detectar clickbait \citep{islam2026banclickthumb}. Su unidad de análisis y su criterio de etiqueta difieren de la publicación de noticias en español de TA1C, y no aporta respuestas de \emph{spoiling}. Sirve para precisar qué se debería anotar y comparar al incorporar video, sin tratar sus resultados como una línea base de esta tesis.
+
 La auditoría debería registrar todas las modalidades presentes en cada noticia: texto, imagen, video, audio y transcripciones. Pueden coexistir; además, no recuperar una imagen no significa que la noticia carezca de ella. Para cada archivo conviene guardar la URL, la fecha, el tipo, su función en la noticia, el estado de recuperación y una huella para detectar duplicados. Con esa información se pueden comparar grupos como ``solo texto'' o ``texto e imagen'' y controlar si las diferencias se deben al contenido o a los medios que publican más material visual.
+
+El escenario de una publicación sin enlace requiere distinguir la información incluida en la propia publicación de la que solo podría recuperarse de una noticia externa. Si el único soporte de la respuesta es un video, la unidad de evidencia y la anotación del \emph{spoiler} cambian. Por ello, una extensión de TA1C debería registrar tanto el vínculo con la noticia como los medios presentes en la publicación, y evaluar por separado los casos sin artículo accesible.
 
 \section{Resolución del clickbait y evaluación de spoilers}
 \label{sec:spoiling}
@@ -96,4 +106,4 @@ Para comparar variantes hay que usar las mismas noticias, particiones y reglas d
 
 La revisión identifica requisitos para comparar estrategias de búsqueda sobre TA1C. Detección y \emph{spoiling} se evalúan por separado, con entradas, métricas y presupuestos explícitos. En detección hacen falta líneas base textuales, medidas por clase y comparaciones pareadas que consideren la fuente y las modalidades disponibles. En \emph{spoiling} se añade una evaluación humana de fidelidad, utilidad, concisión y fluidez. El marco de agentes debe trabajar con ambas interfaces sin incorporar al ciclo reglas especiales para una de ellas.
 
-La imagen constituye una variante de entrada en el caso de clickbait, sujeta a cobertura y controles propios. Una tarea textual externa permite evaluar la transferencia de la interfaz y del proceso de búsqueda. Estas comparaciones requieren separar desarrollo de prueba final y registrar también el costo de adaptación; un resultado positivo en un corpus no equivale a generalidad universal.
+La imagen constituye una variante de entrada en el caso de clickbait, sujeta a cobertura y controles propios. La posible extensión a publicaciones con video o audio requiere nuevas referencias y una auditoría de disponibilidad. Estas comparaciones exigen separar desarrollo de prueba final y medir el costo efectivo de inferencia; un resultado positivo en TA1C no establece automáticamente utilidad para otras plataformas o modalidades.

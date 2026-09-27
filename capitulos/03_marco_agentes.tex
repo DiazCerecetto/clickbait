@@ -1,13 +1,13 @@
 \chapter[Marco de agentes]{Diseño del marco de trabajo basado en agentes}
 \label{cap:agentes}
 
-El marco organiza una búsqueda experimental sobre un espacio de soluciones definido para cada tarea. Recibe un conjunto de datos con particiones fijadas, una métrica de selección, restricciones sobre las salidas y un presupuesto. Produce candidatos ejecutables, resultados verificables y un historial que permite reconstruir por qué se eligió cada experimento. La arquitectura se inspira en el ciclo de propuesta, ejecución y análisis de ASI-Arch \citep{liu2025asiarch}, pero cambia el objeto de búsqueda: aquí se comparan soluciones para tareas de PLN, no mecanismos de atención lineal.
+El marco organiza una búsqueda experimental sobre un espacio de soluciones definido para cada tarea. Recibe un conjunto de datos con particiones fijadas, métricas de calidad y recursos, restricciones sobre las salidas y un presupuesto. Produce candidatos ejecutables, resultados verificables y un historial que permite reconstruir por qué se eligió cada experimento. La arquitectura se inspira en el ciclo de propuesta, ejecución y análisis de ASI-Arch \citep{liu2025asiarch}, pero cambia el objeto de búsqueda: aquí se comparan soluciones para detección, \emph{spoiling} y su integración, no mecanismos de atención lineal.
 
 \section{Interfaz de tarea}
 
 La unidad de adaptación es una especificación de tarea $T=(D,S,M,V,B)$, donde $D$ identifica datos y particiones, $S$ delimita el espacio de soluciones, $M$ define las métricas de selección y reporte, $V$ reúne verificaciones y restricciones, y $B$ fija el presupuesto. La especificación incluye formato de entrada y salida, identificadores de ejemplos, semillas, tiempo máximo y recursos permitidos. Los agentes consultan esta interfaz; la lógica del ciclo no necesita conocer si una salida es una clase o una respuesta textual.
 
-En detección, $M$ incluye F1 de la clase clickbait y medidas por clase. En \emph{spoiling}, debe incorporar una métrica automática para orientar la búsqueda, mientras que la fidelidad al artículo y la utilidad de la respuesta requieren un control adicional. El espacio $S$ puede incluir líneas base léxicas, codificadores ajustados, recuperación y generación; las variantes con imagen se identifican como entradas opcionales. Cada tarea conserva sus propias restricciones, por ejemplo la longitud máxima de una respuesta.
+En detección, $M$ incluye F1 de la clase clickbait y latencia de inferencia en un entorno fijado. En \emph{spoiling}, incluye métricas automáticas y costo de las consultas; la fidelidad a la fuente y la utilidad de la respuesta requieren además un control humano. El espacio $S$ puede incluir líneas base léxicas, codificadores ajustados, recuperación y generación. Las variantes con imagen u otras modalidades solo se comparan cuando las entradas y las etiquetas están disponibles. Cada tarea conserva sus restricciones, por ejemplo la longitud máxima de una respuesta.
 
 \section{Ciclo experimental}
 
@@ -17,11 +17,19 @@ El ejecutor prepara el entorno, comprueba el formato de entradas y salidas, lanz
 
 La condición de parada combina el presupuesto total con límites por candidato. El resultado de una búsqueda es el mejor candidato \emph{válido} según el criterio fijado antes de ejecutarla, junto con la trayectoria de búsqueda y su costo. No se selecciona el resultado por inspección del conjunto final de prueba.
 
+La búsqueda puede considerar configuraciones del pipeline completo: umbral del detector, decisión de cuándo ofrecer un \emph{spoiler}, recuperación de la fuente y generador. Para interpretar los resultados se miden por separado detector y generador antes de evaluar su combinación. Las salidas se vinculan al identificador de la publicación y a la versión del contenido recuperado; una respuesta basada en un artículo que cambió o no se pudo obtener no se trata como una evaluación normal del mismo ejemplo.
+
+\section{Adquisición de datos multimodales}
+
+Se propone un subsistema de agentes de recolección para construir una extensión de TA1C con publicaciones de distintas fuentes y medios. Su función es localizar y recuperar publicaciones, noticias y archivos asociados, extraer texto y metadatos, y registrar procedencia y fallos. Los conectores de cada fuente deben producir un esquema común, con identificadores, URL, fecha de acceso, tipo de medio, relación con la publicación, estado de recuperación y huella del contenido. La extracción automática no asigna por sí sola etiquetas de clickbait ni respuestas de referencia: esas decisiones requieren un protocolo de anotación y control de calidad.
+
+Este subsistema es distinto del ciclo que busca soluciones. Los datos recolectados se congelan y auditan antes de que el proponente reciba una partición de desarrollo. La disponibilidad, las condiciones de uso y el derecho a conservar o distribuir medios pueden limitar el corpus resultante; por eso el tamaño y la cobertura de la extensión no se presuponen aquí.
+
 \section{Controles de validez y reproducibilidad}
 
 Las particiones de evaluación quedan fuera del contexto de los agentes durante la búsqueda. Los candidatos se validan con comprobaciones de esquema, ausencia de identificadores prohibidos, límites de recursos y reglas de la tarea. Las ejecuciones fallidas cuentan para el presupuesto: excluirlas favorecería indebidamente a un método que propone más soluciones inválidas. El registro debe permitir repetir un candidato sin depender del estado de una conversación o de una sesión interactiva.
 
-La comparación experimental separa el efecto de proponer candidatos del de ejecutar más pruebas. Por ello se igualan los recursos disponibles a las búsquedas de referencia y se realizan ablaciones de componentes del ciclo: sin análisis histórico, sin memoria recuperable o con propuestas aleatorias dentro del mismo espacio. Los resultados del estudio de base de los capítulos siguientes sirven para definir entradas, restricciones y referencias; no se consideran una evaluación del marco.
+La comparación experimental separa el efecto de proponer candidatos del de ejecutar más pruebas. Por ello se igualan los recursos disponibles a la búsqueda aleatoria y se realizan ablaciones de componentes del ciclo: sin análisis histórico, sin memoria recuperable o con propuestas aleatorias dentro del mismo espacio. Los resultados del estudio de base de los capítulos siguientes sirven para definir entradas, restricciones y referencias; no se consideran una evaluación del marco.
 
 % Para cerrar este capítulo con la implementación real: documentar componentes,
 % modelos y versiones de agentes, prompts, esquemas de datos, aislamiento de
