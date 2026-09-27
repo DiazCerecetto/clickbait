@@ -6,8 +6,3 @@ Este repositorio contiene el manuscrito LaTeX de la tesis de maestría de Miguel
 - [Abrir la página de la tesis](https://diazcerecetto.github.io/clickbait/)
 
 El PDF se vuelve a compilar y publicar automáticamente cuando se actualiza el manuscrito.
-
-## Materiales de la propuesta de tesis
-
-- [Borrador del plan de trabajo (PDF)](materiales/plan-trabajo-tesis-2026.pdf)
-- [Demostración del prototipo de clickbait (MP4)](materiales/demo-clickbait.mp4)

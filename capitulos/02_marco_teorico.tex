@@ -9,6 +9,10 @@ Un sistema de agentes puede añadir propuestas condicionadas por resultados ante
 
 El preprint AgentHPOBench evalúa agentes como optimizadores secuenciales: cada paso parte de una línea base validada y ofrece al agente configuraciones, métricas y registros anteriores antes de proponer la siguiente prueba \citep{huai2026agenthpobench}. Sus autores observan dificultades para sostener mejoras iterativas y diagnosticar registros complejos. Es un antecedente metodológico para medir trayectorias y fallos, no una demostración de que los agentes superarán a la búsqueda aleatoria en clickbait.
 
+MLGym reúne 13 tareas abiertas de investigación en aprendizaje automático. En su evaluación, los agentes mejoraron líneas base principalmente mediante ajustes de hiperparámetros, sin producir mejoras sustanciales basadas en ideas nuevas \citep{nathani2025mlgym}. ResearchGym estudia tareas derivadas de cinco investigaciones y encuentra fallos de planificación, manejo de recursos y continuidad entre experimentos \citep{garikaparthi2026researchgym}. Ambos son preprints y sus tareas difieren de TA1C; motivan registrar todas las trayectorias y medir la estabilidad de las mejoras, sin atribuir al agente creatividad o superioridad antes de comprobarlas.
+
+El costo de evaluar candidatos puede variar mucho según el modelo y la configuración. La optimización bayesiana sensible al costo estudia cómo elegir pruebas cuando un presupuesto de tiempo o dinero importa más que el número de iteraciones \citep{lee2020costawarebo}. Por ello la búsqueda aleatoria es una referencia necesaria, pero el resultado también debe expresarse como calidad alcanzada frente a gasto acumulado. Un comparador sensible al costo solo sería interpretable si puede operar sobre el mismo espacio y presupuesto.
+
 La reutilización entre tareas exige separar el ciclo de búsqueda de la especificación de una tarea concreta. Datos, métricas, restricciones y espacio de candidatos pueden variar; registro experimental, verificaciones generales y reglas de presupuesto deberían poder conservarse. La portabilidad se mide por el desempeño de la búsqueda y por el trabajo necesario para adaptar estos componentes, no solo por la capacidad de ejecutar el código en un segundo corpus.
 
 \section{La brecha informativa como objeto de estudio}
@@ -36,6 +40,8 @@ El corpus original de TA1C reúne 3\,500 publicaciones de 18 medios, anotadas pa
 
 La tabla~\ref{tab:corpus} muestra por qué los resultados de estos recursos no se comparan directamente. El \emph{Clickbait Challenge 2017} predice el grado de clickbait de publicaciones sociales \citep{potthast2018}. Webis-Clickbait-22 y SemEval-2023 Task 5 trabajan con tipos de spoiler y su generación a partir de publicaciones y páginas en inglés \citep{hagen2022,frobe2023}. NoticIA reúne 850 artículos en español con titulares clickbait y resúmenes humanos de una oración \citep{garciaferrero2024}. Ese resumen no siempre responde a la pregunta concreta que plantea una publicación de TA1C.
 
+Un corpus italiano incorpora anotaciones de detección, \emph{spoiling} y neutralización del titular; esta última reescribe el titular para incluir la información omitida \citep{russo2024italian}. Muestra otra forma de cerrar la brecha informativa, aunque su idioma, fuentes y procedimiento de anotación impiden tratar sus resultados como una prueba externa directa para TA1C.
+
 \begin{table}[htbp]
 \centering
 \small
@@ -49,6 +55,7 @@ TA1C (2025) & Publicación de noticia; detección y spoiler & Brecha informativa
 Challenge 2017 & Publicación social; regresión & Intensidad de clickbait & Inglés \\
 Webis/SemEval (2023) & Publicación y página; tipo y generación de spoiler & Fragmento o respuesta que cierra la brecha & Inglés \\
 NoticIA & Titular y artículo; resumen de una frase & Resumen humano del artículo & Español \\
+Corpus italiano & Titular y artículo; detección, spoiler y neutralización & Etiquetas y textos revisados manualmente & Italiano \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -68,12 +75,16 @@ También importa saber en qué se apoya la predicción. Un modelo podría recono
 
 ClickGuard presenta una extensión de navegador que combina detección de clickbait y un texto breve generado a partir del artículo \citep{michaluk2026clickguard}. Su \emph{spoiler} se describe como un resumen de una o dos frases. La tesis deberá distinguir ese formato de una respuesta que cierre la pregunta omitida y medir ambos componentes con la definición y las particiones de TA1C; las puntuaciones publicadas en otros corpus no son comparables directamente.
 
+Un estudio reciente de clasificación de titulares combina embeddings externos con rasgos heurísticos y compara F1 con tiempo de inferencia \citep{kuntur2026quick}. Sus datos agrupan conjuntos con definiciones distintas de clickbait; por eso no ofrece una línea base numérica transferible a TA1C. Además, sus autores indican que generar los embeddings domina el tiempo total. Al medir latencia de uso hay que incluir esa etapa y cualquier consulta de red, no solo el clasificador que recibe los vectores ya calculados.
+
 \section{Imagen, video y audio como contexto}
 \label{sec:multimodal}
 
 La imagen puede cambiar el sentido de una publicación. A veces revela la respuesta omitida; otras, refuerza la promesa o solo ilustra el tema. Al estudiar publicaciones de Twitter, \citet{glenski2017} no encontraron una mejora concluyente al añadir información visual al texto. En publicaciones de moda de Instagram, \citet{ha2018} sí encontraron señales útiles en la relación entre imagen y texto. Ninguno de los dos resultados permite anticipar qué ocurrirá con noticias en español anotadas según el criterio de TA1C.
 
 Un modelo multimodal también puede aprender asociaciones engañosas. \citet{yu2024} proponen separar los factores relevantes de los sesgos en publicaciones con varias modalidades. Para medir el aporte de la imagen en TA1C, habría que comparar las mismas noticias con y sin ella, registrar cuál se usó y tratar los casos en que falta. Permutar las imágenes entre noticias serviría para comprobar si el modelo usa su contenido o se apoya en patrones de fuente y tema. Si la diferencia es pequeña, conviene estimar su incertidumbre y revisar los errores.
+
+Un corpus de avances de noticias con pares titular--imagen estudia omisiones de contexto que inducen interpretaciones engañosas y propone detectar y corregir esos casos \citep{li2026omissions}. Se acerca al análisis de información omitida, pero su etiqueta mide una interpretación incorrecta frente al artículo, mientras TA1C puede considerar clickbait una omisión que despierta curiosidad aun sin inducir una interpretación falsa. La comparación de ambos criterios puede orientar la guía de anotación de una extensión multimodal, sin fusionar sus etiquetas.
 
 Los trabajos sobre miniaturas y transcripciones de video suelen usar otras etiquetas. Un titular puede describir mal un video sin dejar abierta la pregunta que define el clickbait en TA1C. CHECKER estudia miniaturas con supervisión débil \citep{xie2021}, mientras que BaitRadar combina texto, imagen y transcripciones de YouTube \citep{gamage2021}. Son antecedentes para explorar medios audiovisuales, aunque sus métricas no se trasladan directamente a noticias. El repositorio no contiene un corpus local de video o audio con cobertura, origen y etiquetas verificados para esta evaluación.
 
@@ -89,6 +100,8 @@ El escenario de una publicación sin enlace requiere distinguir la información 
 \citet{hagen2022} proponen clasificar el tipo de respuesta y obtenerla mediante pregunta-respuesta o recuperación de pasajes. SemEval-2023 Task 5 distingue spoilers de una frase, de un pasaje o de varias partes \citep{frobe2023}. TA1C pide a los sistemas respuestas de hasta 280 caracteres y las evalúa contra referencias humanas \citep{ta1c2025}. Las referencias publicadas no siempre cumplen ese límite: en los CSV locales lo superan 39/300 respuestas de entrenamiento, 19/100 de desarrollo y 20/100 de prueba. Esta diferencia debe tenerse en cuenta al interpretar métricas de solapamiento. Por las diferencias entre tareas y corpus, los resultados de un desafío no se pueden trasladar directamente al otro.
 
 BLEU y ROUGE comparan automáticamente una respuesta con textos de referencia. Son útiles, pero pueden penalizar una paráfrasis correcta o premiar palabras coincidentes en una respuesta equivocada. Por eso TA1C añadió juicios humanos de exactitud y completitud, concisión y fluidez para algunos sistemas \citep{ta1c2025}. El sistema con mejor BLEU no fue necesariamente el mejor valorado en exactitud. Evaluar un spoiler exige comprobar que responde a la pregunta y que la noticia respalda lo que afirma, aunque el texto suene natural.
+
+GaRAGe, aunque evalúa respuestas largas con recuperación y no spoilers, separa la pertinencia de los pasajes de apoyo de la corrección de la respuesta y examina cuándo el sistema debería abstenerse por falta de evidencia \citep{sorodoc2025garage}. Esa distinción sirve para diseñar una rúbrica de \emph{spoiling} con evidencia identificable y casos sin respuesta verificable. Una reproducción de juicios humanos de factualidad en otro dominio también muestra que el procedimiento y la especialización de quienes anotan pueden afectar la evaluación \citep{florescu2025reprohum}; no permite extrapolar sus acuerdos a TA1C, pero aconseja documentar instrucciones, desacuerdos y decisiones de adjudicación.
 
 NoticIA ofrece un antecedente en español para generar una oración a partir de artículos con titulares clickbait \citep{garciaferrero2024}. Permite estudiar cómo condensar una noticia, aunque resumirla no equivale siempre a resolver la pregunta de TA1C. Si se usa como conjunto externo, habrá que comprobar qué preguntas responde cada resumen. También conviene medir por separado el aporte del artículo completo y el de la imagen.
 
