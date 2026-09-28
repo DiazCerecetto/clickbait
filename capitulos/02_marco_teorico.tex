@@ -120,3 +120,21 @@ Para comparar variantes hay que usar las mismas noticias, particiones y reglas d
 La revisión identifica requisitos para comparar estrategias de búsqueda sobre TA1C. Detección y \emph{spoiling} se evalúan por separado, con entradas, métricas y presupuestos explícitos. En detección hacen falta líneas base textuales, medidas por clase y comparaciones pareadas que consideren la fuente y las modalidades disponibles. En \emph{spoiling} se añade una evaluación humana de fidelidad, utilidad, concisión y fluidez. El marco de agentes debe trabajar con ambas interfaces sin incorporar al ciclo reglas especiales para una de ellas.
 
 La imagen constituye una variante de entrada en el caso de clickbait, sujeta a cobertura y controles propios. La posible extensión a publicaciones con video o audio requiere nuevas referencias y una auditoría de disponibilidad. Estas comparaciones exigen separar desarrollo de prueba final y medir el costo efectivo de inferencia; un resultado positivo en TA1C no establece automáticamente utilidad para otras plataformas o modalidades.
+
+\section{Avance exploratorio: frentes de Pareto}
+
+Como avance del primer objetivo, las figuras~\ref{fig:frente-deteccion} y~\ref{fig:frente-spoiling} muestran corridas exploratorias sobre las particiones de desarrollo de TA1C. Comparan calidad con FLOPs estimados por ejemplo: F1 de la clase clickbait para detección y ROUGE-L interno para \emph{spoiling}. Estos frentes orientan la selección de modelos, pero no miden todavía la latencia al recorrer un feed ni el costo de API por spoiler. La evaluación posterior incorporará F1 frente a latencia y BLEU, ROUGE-L y BERTScore frente a costo por consulta; el ROUGE-L interno no se equipara al evaluador oficial.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{frente_detection.png}
+\caption{Frente exploratorio de detección en desarrollo (700 ejemplos): F1 de clickbait frente a FLOPs estimados por ejemplo. La línea une las configuraciones no dominadas.}
+\label{fig:frente-deteccion}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{frente_spoiling.png}
+\caption{Frente exploratorio de \emph{spoiling} en desarrollo (100 ejemplos): ROUGE-L interno frente a FLOPs estimados por ejemplo. La línea une las configuraciones no dominadas.}
+\label{fig:frente-spoiling}
+\end{figure}
